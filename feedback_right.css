@@ -1,0 +1,11 @@
+body{
+    text-align: center;
+}
+.feedbackright_section{
+    border: 3px solid black;
+    background-color: grey;
+}
+.quizinfo{
+    display:flex;
+    justify-content: space-between;
+}
