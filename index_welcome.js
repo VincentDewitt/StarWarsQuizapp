@@ -55,21 +55,81 @@ function startQuiz(){
 }
 //checking value of answer submited
 function checkAnswer(){
-    let CurrentQ = quizQuestions.question
+$('.welcome_section').on('click' , '.submitanswer' , function (event){
+    event.preventDefault();
+    let answerSelected = $('.option:checked').val();
+    if ( answerSelected === undefined){
+        $('.unselected_error').html(`
+        <p>
+        Please select a answer
+        </p>
+        `)
+    }
 
-$('.submitanswer').click(function (event){
-    event.preventDefault
+    else if (answerSelected === quizQuestions[currentQuestion].correct){
+        currentScore++;
+        $('.welcome_section').html(`
+        <div class="quizinfo">
+            <div class="userscore">
+               <p>Score ${currentScore}/5</p>
+           </div>
+        <div class="questionprog">
+               <p>Question ${currentQuestion+1}/5</p>
+        </div>
+   </div>
+    <div class="feedbackright_section">
+    <img src="#" alt="Star Wars correct Gif">
+     <p>Witty Dialog that tells the user answer was correct. </p>
+     <form>
+         <button class="next_question" type="submit">Next Question</button>
+     </form>
+    </div>
+        `)
+
+    }
+    else {
+        $('.welcome_section').html(`
+        <div class="quizinfo">
+        <div class="userscore">
+           <p>Score ${currentScore}/5</p>
+       </div>
+    <div class="questionprog">
+           <p>Question ${currentQuestion+1}/5</p>
+    </div>
+</div>
+<div class="feedbackwrong_section">
+<img src="#" alt="Star Wars Wrong Gif">
+ <p>Witty Dialog that tells the user answer was incorrect. </p>
+ <form>
+     <button class="next_question" type="submit">Next Question</button>
+ </form>
+</div>
+        `)
+    }
+
+
+
+    let CurrentQ = quizQuestions[currentQuestion]
     
 })
+}
+function nextQuestion(){
+    $('.welcome_section').on('click', '.next_question' , function (event){
+        event.preventDefault();
+        currentQuestion++
+        //needs something to tell when at end of quiz 
+        createQuestionView();
+
+    });
 }
 function createQuestionView(){
     const questionHtml = $(`
     <div class="quizinfo">
          <div class="userscore">
-            <p>Score 0/5</p>
+            <p>Score ${currentScore}/5</p>
         </div>
      <div class="questionprog">
-            <p>Question 1/5</p>
+            <p>Question ${currentQuestion+1}/5</p>
      </div>
 </div>
     <div class="Question_section">
@@ -77,23 +137,31 @@ function createQuestionView(){
          <fieldset>
              <legend>${quizQuestions[currentQuestion].question}</legend>
           <label>
-              <input name="option" type="radio" value="Answer 1">${quizQuestions[currentQuestion].answera}
+              <input name="option" class="option" type="radio" value="answera">${quizQuestions[currentQuestion].answera}
           </label>
           <label>
-                <input name="option" type="radio" value="Answer 2">${quizQuestions[currentQuestion].answerb}
+                <input name="option" class="option" type="radio" value="answerb">${quizQuestions[currentQuestion].answerb}
             </label> 
             <label>
-                    <input name="option" type="radio" value="Answer 3">${quizQuestions[currentQuestion].answerc}
+                    <input name="option" class="option" type="radio" value="answerc">${quizQuestions[currentQuestion].answerc}
             </label>
             <label>
-                    <input name="option" type="radio" value="Answer 4">${quizQuestions[currentQuestion].answerd}
+                    <input name="option" class="option" type="radio" value="answerd">${quizQuestions[currentQuestion].answerd}
             </label>         
          <button class="submitanswer" type="submit">submit</button>
         </fieldset>
      </form>
+     <div class="unselected_error">
+     </div>
     </div>
     `);
     $(".welcome_section").html(questionHtml);
 
 }
-    startQuiz();
+function init(){
+    startQuiz(); 
+    checkAnswer(); 
+    nextQuestion();
+
+}
+init();
