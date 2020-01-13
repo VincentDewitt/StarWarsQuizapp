@@ -71,15 +71,15 @@ $('.welcome_section').on('click' , '.submitanswer' , function (event){
         $('.welcome_section').html(`
         <div class="quizinfo">
             <div class="userscore">
-               <p>Score ${currentScore}/5</p>
+               <p>Score ${currentScore}/${quizQuestions.length}</p>
            </div>
         <div class="questionprog">
-               <p>Question ${currentQuestion+1}/5</p>
+               <p>Question ${currentQuestion+1}/${quizQuestions.length}</p>
         </div>
    </div>
     <div class="feedbackright_section">
-    <img src="#" alt="Star Wars correct Gif">
-     <p>Witty Dialog that tells the user answer was correct. </p>
+    <img src="images-content/Correctanswer.gif" alt="BB-8 giving you a thumbs up!">
+     <p>Congrats your correct. Click the button below to go to the next question.  </p>
      <form>
          <button class="next_question" type="submit">Next Question</button>
      </form>
@@ -91,15 +91,15 @@ $('.welcome_section').on('click' , '.submitanswer' , function (event){
         $('.welcome_section').html(`
         <div class="quizinfo">
         <div class="userscore">
-           <p>Score ${currentScore}/5</p>
+           <p>Score ${currentScore}/${quizQuestions.length}</p>
        </div>
     <div class="questionprog">
-           <p>Question ${currentQuestion+1}/5</p>
+           <p>Question ${currentQuestion+1}/${quizQuestions.length}</p>
     </div>
 </div>
 <div class="feedbackwrong_section">
-<img src="#" alt="Star Wars Wrong Gif">
- <p>Witty Dialog that tells the user answer was incorrect. </p>
+<img src="images-content/wronganswer.gif" alt="Poe Dameron telling you to rethink your technique.">
+ <p>You may want to listen to Poe's Advice, hit the button below for the next question.  </p>
  <form>
      <button class="next_question" type="submit">Next Question</button>
  </form>
@@ -113,23 +113,49 @@ $('.welcome_section').on('click' , '.submitanswer' , function (event){
     
 })
 }
+//function proceeds to the next question and tells quiz when its over
 function nextQuestion(){
     $('.welcome_section').on('click', '.next_question' , function (event){
         event.preventDefault();
         currentQuestion++
-        //needs something to tell when at end of quiz 
+        if (currentQuestion === quizQuestions.length){
+            $('.welcome_section').html(`
+            <div class="final_section">
+        <div class="finalscore">
+            <h3>Final Score: ${currentScore}/${quizQuestions.length}</h3>
+        </div>
+        <img src="images-content/endquiz.gif" alt="end img">
+        <p>For better or worse you completed the test! Click the button below to restart. </p>
+        <form>
+         <button class="restartbutton" type="submit">Restart Quiz</button>
+        </form>
+        </div>
+            `)
+        }
+        else{
         createQuestionView();
+        }
 
     });
+}
+function restartQuiz(){
+    $('.welcome_section').on('click','.restartbutton', function (event){
+        event.preventDefault();
+        currentScore=0;
+        currentQuestion=0;
+        createQuestionView();
+
+    })
+
 }
 function createQuestionView(){
     const questionHtml = $(`
     <div class="quizinfo">
          <div class="userscore">
-            <p>Score ${currentScore}/5</p>
+            <p>Score ${currentScore}/${quizQuestions.length}</p>
         </div>
      <div class="questionprog">
-            <p>Question ${currentQuestion+1}/5</p>
+            <p>Question ${currentQuestion+1}/${quizQuestions.length}</p>
      </div>
 </div>
     <div class="Question_section">
@@ -162,6 +188,7 @@ function init(){
     startQuiz(); 
     checkAnswer(); 
     nextQuestion();
+    restartQuiz();
 
 }
 init();
