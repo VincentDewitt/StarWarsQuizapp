@@ -1,6 +1,7 @@
 body{
     text-align: center;
     background-image: url(images-content/ackground.jpg);
+    background-size: cover;
     
 }
 h1{
@@ -20,4 +21,7 @@ form{
 .quizinfo{
     display:flex;
     justify-content: space-between;
+}
+img{
+    width: 50%;
 }
